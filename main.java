@@ -122,8 +122,9 @@ public class main {
        
         //計算
         String stringArray[] = lastFormula.split(" ");
-        
+        //stackをString型で作成
         Deque<String> que = new ArrayDeque<>();
+        
         String a = "";
         String b = "";
         
@@ -134,12 +135,14 @@ public class main {
             case "/":case "*":
                 a = que.pollFirst();
                 b = que.pollFirst();
-                
+                //数字かどうか
                 boolean isNumeric1 =  a.matches("[+-]?\\d*(\\.\\d+)?");
                 boolean isNumeric2 =  b.matches("[+-]?\\d*(\\.\\d+)?");
                 
                if ( (isNumeric1) && (isNumeric2)) {
+            	   //数字の時
                 int result = 0;
+                //計算を行うため一度int型にする
                 int aa = Integer.parseInt(a);
             	int bb = Integer.parseInt(b);
                 if (stringArray[i].equals("+")) {
@@ -151,9 +154,11 @@ public class main {
 				} else if (stringArray[i].equals("/")) {				
 					result = bb / aa;					
 				}
+                //int型をstring型に戻す
                 String finalResult = Integer.toString(result);
+               //stackに入れる
                 que.addFirst(finalResult);
-               }else {
+               }else {//数字ではない時
             	   String result = "";
             	   if (stringArray[i].equals("+")) {
    					result = "b + a";					
@@ -164,7 +169,7 @@ public class main {
    				} else if (stringArray[i].equals("/")) {				
    					result = "b / a";					
    				}
-            	   que.addFirst(result);
+            	   que.addFirst(result);//stackに入れる
                }
                 break;
                 
