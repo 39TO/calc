@@ -111,7 +111,9 @@ public class main {
                     break;
             }
         }
-
+		int k = 3;
+		int h = 2;
+		
 		while (!stack.isEmpty()) {
 			resultBuilder.append(" ");
             resultBuilder.append(stack.removeFirst());
@@ -161,13 +163,13 @@ public class main {
                }else {//数字ではない時
             	   String result = "";
             	   if (stringArray[i].equals("+")) {
-   					result = "b + a";					
+   					result = (b+"+"+a);					
    				} else if (stringArray[i].equals("-")) {					
-   					result = "b - a";					
+   					result = (b+"-"+a);					
    				} else if (stringArray[i].equals("*")) {				
-   					result = "b * a";					
+   					result = (b+"*"+a);					
    				} else if (stringArray[i].equals("/")) {				
-   					result = "b / a";					
+   					result = (b+"/"+a);					
    				}
             	   que.addFirst(result);//stackに入れる
                }
@@ -177,8 +179,8 @@ public class main {
             	que.addFirst(stringArray[i]);
             
         }
+        }
         System.out.println(que.pop());
-    }
        
 	}
 }
