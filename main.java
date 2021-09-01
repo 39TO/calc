@@ -27,26 +27,28 @@ public class main {
             }
         }
         int count2 = 0;
+        
         for (int v = 0; v < sequenceList.length; v++) {
             if (sequenceList[v].equals(")")) {
                 count2++;
             }
         }
+        
 		if(count1 != count2) {
 			System.out.println("error:かっこの数が間違っています");
 		}
 		
 		//式のミスを調べる
-		for(int i=0; i<sequenceList.length; i++){
-            switch (sequenceList[i]) {
+		for (int i=0; i<sequenceList.length; i++){
+			switch (sequenceList[i]) {
             //演算子
-           case "+": case "-": case "*": case "/":
-            if((sequenceList[i+1].equals("+"))||(sequenceList[i+1].equals("-"))||(sequenceList[i+1].equals("*"))||(sequenceList[i+1].equals("/"))) {
-            	System.out.println("error:演算子が連続してます");
-            }
+            case "+": case "-": case "*": case "/":
+            	if((sequenceList[i+1].equals("+"))||(sequenceList[i+1].equals("-"))||(sequenceList[i+1].equals("*"))||(sequenceList[i+1].equals("/"))) {
+            		System.out.println("error:演算子が連続してます");
+            	}
             break;
             //式と変数
-            //default:
+            default:
             	//if(!(sequenceList[i+1].equals("+"))||!(sequenceList[i+1].equals("-"))||!(sequenceList[i+1].equals("*"))||!(sequenceList[i+1].equals("/"))) {
             		//System.out.println("error:数字または変数が連続してます");
             	//}
@@ -54,8 +56,8 @@ public class main {
             }
 		//最後尾の要素が演算子以外
 		if((sequenceList[sequenceList.length - 1].equals("+"))||(sequenceList[sequenceList.length - 1].equals("-"))||(sequenceList[sequenceList.length - 1].equals("*"))||(sequenceList[sequenceList.length - 1].equals("/"))) {
-			System.out.println("error:式が演算子で終わっています");
-		}
+					System.out.println("error:式が演算子で終わっています");
+				}
 		
 		//変換
 		StringBuilder resultBuilder = new StringBuilder(sequenceList.length);
@@ -81,17 +83,18 @@ public class main {
                 case "*":
                 case "/":
                 case "(":
+                	
                     stack.addFirst(sequenceList[i]);
                     break;
                 case ")":
                     // 「(」から「)」までの演算子をバッファへ
                     List<Object> list = Arrays.asList(stack.toArray());
                     int index = list.indexOf('(');
-
+                    
                     Deque<String> workStack = new ArrayDeque<>();
                     for (int i2 = 0; i2 <= index; i2++) {
                         String c = stack.removeFirst();
-                        if (!c.equals(")")) {
+                        if (!c.equals("(")) {
                             workStack.addFirst(c);
                         }
                     }
@@ -111,12 +114,11 @@ public class main {
                     break;
             }
         }
-		int k = 3;
-		int h = 2;
+		
 		
 		while (!stack.isEmpty()) {
 			resultBuilder.append(" ");
-            resultBuilder.append(stack.removeFirst());
+			resultBuilder.append(stack.removeFirst());
         }
 		//変換された式の表示
         String lastFormula = resultBuilder.toString();
@@ -133,57 +135,59 @@ public class main {
         for (int i = 0; i < stringArray.length; i++) {
         	
             switch (stringArray[i]) {
-            case "+": case "-":
-            case "/":case "*":
-                a = que.pollFirst();
-                b = que.pollFirst();
+            	case "+": case "-":
+            	case "/":case "*":
+            		a = que.pollFirst();
+            		b = que.pollFirst();
                 //数字かどうか
-                boolean isNumeric1 =  a.matches("[+-]?\\d*(\\.\\d+)?");
-                boolean isNumeric2 =  b.matches("[+-]?\\d*(\\.\\d+)?");
+            		boolean isNumeric1 =  a.matches("[+-]?\\d*(\\.\\d+)?");
+            		boolean isNumeric2 =  b.matches("[+-]?\\d*(\\.\\d+)?");
                 
-               if ( (isNumeric1) && (isNumeric2)) {
+            		if ( (isNumeric1) && (isNumeric2)) {	
             	   //数字の時
-                int result = 0;
+            			int result = 0;
                 //計算を行うため一度int型にする
-                int aa = Integer.parseInt(a);
-            	int bb = Integer.parseInt(b);
-                if (stringArray[i].equals("+")) {
-					result = bb + aa;					
-				} else if (stringArray[i].equals("-")) {					
-					result = bb - aa;					
-				} else if (stringArray[i].equals("*")) {				
-					result = bb * aa;					
-				} else if (stringArray[i].equals("/")) {				
-					result = bb / aa;					
-				}
+            			int aa = Integer.parseInt(a);
+            			int bb = Integer.parseInt(b);
+            			
+            			if (stringArray[i].equals("+")) {
+            				result = bb + aa;					
+            			} else if (stringArray[i].equals("-")) {					
+            				result = bb - aa;					
+            			} else if (stringArray[i].equals("*")) {				
+            				result = bb * aa;					
+            			} else if (stringArray[i].equals("/")) {				
+            				result = bb / aa;					
+            			}
                 //int型をstring型に戻す
-                String finalResult = Integer.toString(result);
+            			String finalResult = Integer.toString(result);
                //stackに入れる
-                que.addFirst(finalResult);
-               }else {//数字ではない時
-            	   String result = "";
-            	   if (stringArray[i].equals("+")) {
-   					result = (b+"+"+a);					
-   				} else if (stringArray[i].equals("-")) {					
-   					result = (b+"-"+a);					
-   				} else if (stringArray[i].equals("*")) {				
-   					result = (b+"*"+a);					
-   				} else if (stringArray[i].equals("/")) {				
-   					result = (b+"/"+a);					
-   				}
-            	   que.addFirst(result);//stackに入れる
-               }
+            			que.addFirst(finalResult);
+            		} else {//数字ではない時
+            			String result = "";
+            			if (stringArray[i].equals("+")) {
+            				result = (b+"+"+a);					
+            			} else if (stringArray[i].equals("-")) {					
+            				result = (b+"-"+a);					
+            			} else if (stringArray[i].equals("*")) {				
+            				result = (b+"*"+a);					
+            			} else if (stringArray[i].equals("/")) {				
+            				result = (b+"/"+a);					
+            			}
+            			que.addFirst(result);//stackに入れる
+            		}
                 break;
                 
             default:
             	que.addFirst(stringArray[i]);
             
-        }
+            }
         }
         System.out.println(que.pop());
        
-	}
-}
+	 }
+ }
+
         
                 
        
