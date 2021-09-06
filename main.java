@@ -49,14 +49,14 @@ public class main {
 						break;
 					}
 				}
-			}else {
-				evaluate = "OK";
+				if(!evaluate.equals("OK")) {
+					System.out.println("error:「(」の後に「）」がないです");
+					sequenceList = null;
+				}
 			}
 		}
-		if(!evaluate.equals("OK")) {
-			System.out.println("error:「(」の後に「）」がないです");
-			sequenceList = null;
-		}
+		
+		
 		//式のミスを調べる
 		for (int i=0; i<sequenceList.length; i++){
 			switch (sequenceList[i]) {
