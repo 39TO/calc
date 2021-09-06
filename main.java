@@ -12,9 +12,8 @@ import java.util.Arrays;
 
 
 public class main {
-
 	public static void main(String[] args) {
-
+		
 		String formula = new java.util.Scanner(System.in).nextLine();
 		
 		String[]sequenceList  = formula.split(" ");
@@ -26,6 +25,7 @@ public class main {
                 count1++;
             }
         }
+        
         int count2 = 0;
         
         for (int v = 0; v < sequenceList.length; v++) {
@@ -36,8 +36,27 @@ public class main {
         
 		if(count1 != count2) {
 			System.out.println("error:かっこの数が間違っています");
+			sequenceList = null;
 		}
 		
+		//（で始まったら）で終わる決まり
+		String evaluate = "";
+		for (int p = 0; p < sequenceList.length; p++) {
+			if(sequenceList[p].equals("(")) {
+				for (int p2 = p+1; p2 < sequenceList.length; p2++) {
+					if(sequenceList[p2].equals(")")) {
+						evaluate = "OK";
+						break;
+					}
+				}
+			}else {
+				evaluate = "OK";
+			}
+		}
+		if(!evaluate.equals("OK")) {
+			System.out.println("error:「(」の後に「）」がないです");
+			sequenceList = null;
+		}
 		//式のミスを調べる
 		for (int i=0; i<sequenceList.length; i++){
 			switch (sequenceList[i]) {
@@ -45,18 +64,15 @@ public class main {
             case "+": case "-": case "*": case "/":
             	if((sequenceList[i+1].equals("+"))||(sequenceList[i+1].equals("-"))||(sequenceList[i+1].equals("*"))||(sequenceList[i+1].equals("/"))) {
             		System.out.println("error:演算子が連続してます");
+            		sequenceList = null;
             	}
-            break;
-            //式と変数
-            default:
-            	//if(!(sequenceList[i+1].equals("+"))||!(sequenceList[i+1].equals("-"))||!(sequenceList[i+1].equals("*"))||!(sequenceList[i+1].equals("/"))) {
-            		//System.out.println("error:数字または変数が連続してます");
-            	//}
-            	}
+            break;            	
             }
+		}
 		//最後尾の要素が演算子以外
 		if((sequenceList[sequenceList.length - 1].equals("+"))||(sequenceList[sequenceList.length - 1].equals("-"))||(sequenceList[sequenceList.length - 1].equals("*"))||(sequenceList[sequenceList.length - 1].equals("/"))) {
 					System.out.println("error:式が演算子で終わっています");
+					sequenceList = null;
 				}
 		
 		//変換
@@ -89,19 +105,28 @@ public class main {
                 case ")":
                     // 「(」から「)」までの演算子をバッファへ
                     List<Object> list = Arrays.asList(stack.toArray());
-                    int index = list.indexOf('(');
+                    /*
+                    System.out.println("listの中身");
+                    System.out.println(list);
+                    */
+                    int index = list.indexOf("(");
                     
                     Deque<String> workStack = new ArrayDeque<>();
+                   
                     for (int i2 = 0; i2 <= index; i2++) {
-                        String c = stack.removeFirst();
+                        String c = stack.removeFirst();                       
                         if (!c.equals("(")) {
                             workStack.addFirst(c);
                         }
+                        /*
+                        System.out.println("workstackの中身");
+                        System.out.println(workStack);
+                        */                        
                     }
 
                     while (!workStack.isEmpty()) {
                     	resultBuilder.append(" ");
-                        resultBuilder.append(workStack.removeFirst());
+                        resultBuilder.append(workStack.removeLast());
                     }
                     break;
                 	
@@ -113,6 +138,18 @@ public class main {
                     resultBuilder.append(sequenceList[i]);
                     break;
             }
+            /*
+            System.out.println("sequenceList[i]の中身");
+            System.out.println(sequenceList[i]);
+            
+            System.out.println("stackの中身");
+            System.out.println(stack);
+            
+            System.out.println("resultBuilderの中身");
+            System.out.println(resultBuilder);
+            
+            System.out.println("-------------------------");
+            */
         }
 		
 		
@@ -133,8 +170,8 @@ public class main {
         String b = "";
         
         for (int i = 0; i < stringArray.length; i++) {
-        	
-            switch (stringArray[i]) {
+        	switch (stringArray[i]) {
+        	//記号が来たときの処理
             	case "+": case "-":
             	case "/":case "*":
             		a = que.pollFirst();
@@ -142,7 +179,9 @@ public class main {
                 //数字かどうか
             		boolean isNumeric1 =  a.matches("[+-]?\\d*(\\.\\d+)?");
             		boolean isNumeric2 =  b.matches("[+-]?\\d*(\\.\\d+)?");
-                
+            		
+            		
+            		
             		if ( (isNumeric1) && (isNumeric2)) {	
             	   //数字の時
             			int result = 0;
@@ -151,24 +190,27 @@ public class main {
             			int bb = Integer.parseInt(b);
             			
             			if (stringArray[i].equals("+")) {
-            				result = bb + aa;					
+            				result = bb + aa;
+            				
             			} else if (stringArray[i].equals("-")) {					
-            				result = bb - aa;					
+            				result = bb - aa;
+            				
             			} else if (stringArray[i].equals("*")) {				
-            				result = bb * aa;					
+            				result = bb * aa;	
+            				
             			} else if (stringArray[i].equals("/")) {				
-            				result = bb / aa;					
+            				result = bb / aa;			
             			}
-                //int型をstring型に戻す
+            			
             			String finalResult = Integer.toString(result);
-               //stackに入れる
-            			que.addFirst(finalResult);
+        	            que.addFirst(finalResult);
+        	            
             		} else {//数字ではない時
             			String result = "";
             			if (stringArray[i].equals("+")) {
-            				result = (b+"+"+a);					
+            				result = ("("+b+"+"+a+")");					
             			} else if (stringArray[i].equals("-")) {					
-            				result = (b+"-"+a);					
+            				result = ("("+b+"-"+a+")");					
             			} else if (stringArray[i].equals("*")) {				
             				result = (b+"*"+a);					
             			} else if (stringArray[i].equals("/")) {				
@@ -179,6 +221,7 @@ public class main {
                 break;
                 
             default:
+            	//数字や変数が来た時
             	que.addFirst(stringArray[i]);
             
             }
