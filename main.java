@@ -87,21 +87,33 @@ public class main {
                         String c = stack.getFirst();
                         if (c.equals("*") || c.equals("/")) {
                         	while (!stack.isEmpty()) {
-                        		resultBuilder.append(" ");
-                        		resultBuilder.append(stack.removeFirst());
+                        		String aaa = stack.removeFirst();
+                        		if(aaa.equals("(")) {
+                        			break;
+                        		}else {
+                        			resultBuilder.append(" ");
+                            		resultBuilder.append(aaa);
+                        		}
                         	}
-                        } else {
+                        }else {
                             break;
                         }
-                	}
+                	
+                    }
                     stack.addFirst(sequenceList[i]);
                     break;
                 case "*":
-                case "/":
                 case "(":
                 	
                     stack.addFirst(sequenceList[i]);
                     break;
+                case "/":
+                	stack.addFirst(sequenceList[i]);
+                	if(sequenceList[i+1].equals("0")) {
+                		System.out.println("error:0では割れません");
+                		
+                	}
+                	break;
                 case ")":
                     // 「(」から「)」までの演算子をバッファへ
                     List<Object> list = Arrays.asList(stack.toArray());
@@ -118,10 +130,10 @@ public class main {
                         if (!c.equals("(")) {
                             workStack.addFirst(c);
                         }
-                        /*
+                        
                         System.out.println("workstackの中身");
                         System.out.println(workStack);
-                        */                        
+                                              
                     }
 
                     while (!workStack.isEmpty()) {
