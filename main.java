@@ -71,9 +71,9 @@ public class main {
 		}
 		//最後尾の要素が演算子以外
 		if((sequenceList[sequenceList.length - 1].equals("+"))||(sequenceList[sequenceList.length - 1].equals("-"))||(sequenceList[sequenceList.length - 1].equals("*"))||(sequenceList[sequenceList.length - 1].equals("/"))) {
-					System.out.println("error:式が演算子で終わっています");
-					sequenceList = null;
-				}
+				System.out.println("error:式が演算子で終わっています");
+				sequenceList = null;
+		}
 		
 		//変換
 		StringBuilder resultBuilder = new StringBuilder(sequenceList.length);
@@ -161,8 +161,30 @@ public class main {
         String lastFormula = resultBuilder.toString();
         System.out.println(lastFormula);
        
+        
+        
         //計算
         String stringArray[] = lastFormula.split(" ");
+        
+        //変数に数値代入
+        for (int u = 0; u < stringArray.length; u++) {
+        	
+        	boolean isNumeric0 =  stringArray[u].matches("[+-]?\\d*(\\.\\d+)?");
+        	
+        	if((stringArray[u].equals("+"))||(stringArray[u].equals("-"))||(stringArray[u].equals("*"))||(stringArray[u].equals("/"))) {       		
+        	}else if(!isNumeric0){
+        		System.out.println(stringArray[u] + "に代入する数値を入力してください");
+        		String subsutitution = new java.util.Scanner(System.in).nextLine();
+        		
+        		for (int u1 = u+1; u1 < stringArray.length; u1++) {
+        			if(stringArray[u1].equals(stringArray[u])) {
+        				stringArray[u1] = subsutitution;
+        			}
+        		}
+        		stringArray[u] = subsutitution;
+        	}
+        }
+        
         //stackをString型で作成
         Deque<String> que = new ArrayDeque<>();
         
@@ -227,7 +249,7 @@ public class main {
             }
         }
         System.out.println(que.pop());
-       
+      
 	 }
  }
 
