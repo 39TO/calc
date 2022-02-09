@@ -8,7 +8,7 @@ import java.util.List;
 
 
 
-public class test {
+public class main {
     public static void main(String[] args) {
         System.out.println("計算式を入力してください(変数を用いても良い）");
         System.out.println("注意：数字と符号の間は半角スペースで開けること");
