@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 
 
-
+//変数を用いた計算
 public class main {
 	public static void main(String[] args) {
 		
